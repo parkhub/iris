@@ -1,13 +1,10 @@
-/* @flow */
-
 /**
  *
- * @module @parkhub/circe
+ * @module @parkhub/iris
  * @author Daniel Olivares
  */
 
-import createProducer from './lib/createProducer';
-import createConsumer from './lib/createConsumer';
+import schemaRegistry from './lib/schemaRegistry';
 
 /* TODOS
  * TODO UPDATE DOCS
@@ -15,9 +12,15 @@ import createConsumer from './lib/createConsumer';
  * TODO Improve DOCS by adding examples etc
 */
 
-const circe = {
-  createProducer,
-  createConsumer
+const irisProto = {
+  initialize() {
+    return this.schemaRegistry.initialize();
+  }
 };
 
-export default circe;
+export default function iris({ registryUrl, brokerUrl } = {}) {
+  return Object.assign(Object.create(irisProto), {
+    schemaRegistry: schemaRegistry({ registryUrl }),
+    brokerUrl
+  });
+}
