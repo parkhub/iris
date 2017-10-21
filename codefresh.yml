@@ -1,0 +1,54 @@
+version: '1.0'
+steps:
+  BuildDockerImage:
+    title: Building Docker Image
+    type: build
+    image_name: circe
+    dockerfile: Dockerfile
+  RunUnitTests:
+    title: Running Unit Tests
+    image: ${{BuildDockerImage}}
+    working_directory: /npm-module
+    commands:
+      - npm start validate
+      - npm start report-coverage
+    on_success:
+      metadata:
+        set:
+          - '${{BuildDockerImage.imageId}}':
+              - CF_QUALITY: true
+    on_fail:
+      metadata:
+        set:
+          - '${{BuildDockerImage.imageId}}':
+              - CF_QUALITY: false
+  # RunIntegrationTests:
+  #   type: composition
+  #   title: Running Integration Tests
+  #   description: Running integration tests with kafka
+  #   composition: docker-compose.yml
+  #   composition_candidates:
+  #     integration_tests:
+  #       image: ${{BuildDockerImage}}
+  #       command: npm start test.integration
+  #   on_success:
+  #     metadata:
+  #       set:
+  #         - '${{BuildDockerImage.imageId}}':
+  #             - CF_QUALITY: true
+  #   on_fail:
+  #     metadata:
+  #       set:
+  #         - '${{BuildDockerImage.imageId}}':
+  #             - CF_QUALITY: false
+  PublishModule:
+    title: Publishing my module
+    image: ${{BuildDockerImage}}
+    working_directory: /npm-module 
+    when:
+      branch:
+        only: [ master ]
+    commands:
+      - npm start build
+      - npm start release
+

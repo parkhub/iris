@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "@parkhub/parkhub-base", 
+    "plugin:flowtype/recommended"
+  ],
+  "plugins": ["flowtype"],
+  "parser": "babel-eslint"
+}
+

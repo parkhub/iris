@@ -1,0 +1,352 @@
+[
+  {
+    "__docId__": 0,
+    "kind": "file",
+    "name": "src/lib/createKeyGeneratorsMap.js",
+    "content": "/* @flow */\n\nimport uuid from 'uuid/v4';\nimport identity from './identity';\n\ntype KeyGenStringType = string;\n\ntype ModifyMessage = Message => Message;\ntype GeneratedKeyModifier = {|\n  key: string,\n  modifyMessage: ModifyMessage\n|};\n\ntype KeyGenCfgType = {|\n  topic: Topic,\n  keyProp?: string,\n  overrideKeyProp?: boolean\n|};\n\nexport type KeyGenerator = PublishCfgs => GeneratedKeyModifier;\nexport type KeyGeneratorCfg = KeyGenStringType | KeyGenCfgType;\nexport type KeyGeneratorMap = Map<Topic, KeyGenerator>;\n\nfunction isNullOrUndefined<T>(value: T): boolean {\n  return value === null || value === undefined;\n}\n\nfunction doesKeyPropertyExist(keyProp: string, object: Object): boolean {\n  const exisingKeyValue = object[keyProp];\n\n  return !isNullOrUndefined(exisingKeyValue);\n}\n\nfunction stringTypeKeyGen({ key }: PublishCfgs): GeneratedKeyModifier {\n  const newKey: string = key || uuid();\n\n  return {\n    key: newKey,\n    modifyMessage: identity\n  };\n}\n\nfunction cfgTypeKeyGen({ keyProp = '', overrideKeyProp = false }: KeyGenCfgType) {\n  return ({ key }: PublishCfgs): GeneratedKeyModifier => {\n    const generatedKey: string = key || uuid();\n\n    if (keyProp) {\n      const newModifyMessage = (message: Message): Message => {\n        if (typeof message !== 'object') {\n          return message;\n        }\n\n        // Check to make sure that key does not already exist\n        if (doesKeyPropertyExist(keyProp, message) && !overrideKeyProp) {\n          return message;\n        }\n\n        const keyObj = {\n          [keyProp]: generatedKey\n        };\n\n        return { ...message, ...keyObj };\n      };\n\n      return {\n        key: generatedKey,\n        modifyMessage: newModifyMessage\n      };\n    }\n\n    return {\n      key: generatedKey,\n      modifyMessage: identity\n    };\n  };\n}\n\nexport default function createKeyGeneratorsMap(keyGenerators: KeyGeneratorCfg[]): KeyGeneratorMap {\n  return keyGenerators.reduce((vMap, kGen) => {\n    if (typeof kGen === 'string') {\n      vMap.set(kGen, stringTypeKeyGen);\n\n      return vMap;\n    }\n\n    const { topic } = kGen;\n\n    vMap.set(topic, cfgTypeKeyGen(kGen));\n\n    return vMap;\n  }, new Map());\n}\n",
+    "static": true,
+    "longname": "/Users/daniel.olivares/Development/parkhub/canonical/circe/src/lib/createKeyGeneratorsMap.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 1,
+    "kind": "function",
+    "name": "isNullOrUndefined",
+    "memberof": "src/lib/createKeyGeneratorsMap.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/lib/createKeyGeneratorsMap.js~isNullOrUndefined",
+    "access": null,
+    "export": false,
+    "importPath": "@parkhub/circe/src/lib/createKeyGeneratorsMap.js",
+    "importStyle": null,
+    "description": " ",
+    "lineNumber": 24,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "T"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 2,
+    "kind": "function",
+    "name": "doesKeyPropertyExist",
+    "memberof": "src/lib/createKeyGeneratorsMap.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/lib/createKeyGeneratorsMap.js~doesKeyPropertyExist",
+    "access": null,
+    "export": false,
+    "importPath": "@parkhub/circe/src/lib/createKeyGeneratorsMap.js",
+    "importStyle": null,
+    "description": " ",
+    "lineNumber": 28,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "keyProp",
+        "description": ""
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "object",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 3,
+    "kind": "function",
+    "name": "stringTypeKeyGen",
+    "memberof": "src/lib/createKeyGeneratorsMap.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/lib/createKeyGeneratorsMap.js~stringTypeKeyGen",
+    "access": null,
+    "export": false,
+    "importPath": "@parkhub/circe/src/lib/createKeyGeneratorsMap.js",
+    "importStyle": null,
+    "description": " ",
+    "lineNumber": 34,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "PublishCfgs"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "undefined",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "GeneratedKeyModifier"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 4,
+    "kind": "function",
+    "name": "cfgTypeKeyGen",
+    "memberof": "src/lib/createKeyGeneratorsMap.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/lib/createKeyGeneratorsMap.js~cfgTypeKeyGen",
+    "access": null,
+    "export": false,
+    "importPath": "@parkhub/circe/src/lib/createKeyGeneratorsMap.js",
+    "importStyle": null,
+    "description": "",
+    "lineNumber": 43,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "KeyGenCfgType"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "undefined",
+        "description": ""
+      }
+    ]
+  },
+  {
+    "__docId__": 5,
+    "kind": "function",
+    "name": "createKeyGeneratorsMap",
+    "memberof": "src/lib/createKeyGeneratorsMap.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/lib/createKeyGeneratorsMap.js~createKeyGeneratorsMap",
+    "access": null,
+    "export": true,
+    "importPath": "@parkhub/circe/src/lib/createKeyGeneratorsMap.js",
+    "importStyle": "createKeyGeneratorsMap",
+    "description": " ",
+    "lineNumber": 78,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "keyGenerators",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "KeyGeneratorMap"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 6,
+    "kind": "file",
+    "name": "src/lib/createValidatorsMap.js",
+    "content": "/* @flow */\n\n/* TODOS\n * TODO Enhance the validators so that they can return a status which tells circe wether or not to \n * continue processing.\n*/\n\ntype Validate = (message: Message) => void;\n\nexport type ValidatorMap = Map<Topic, Validate>;\n\nexport type Validator = {|\n  topic: Topic,\n  validate: Validate\n|};\n\nexport default function createValidatorsMap(validators: Validator[]): ValidatorMap {\n  return validators.reduce((vMap: ValidatorMap, validator: Validator) => {\n    const { topic, validate } = validator;\n    vMap.set(topic, validate);\n\n    return vMap;\n  }, new Map());\n}\n",
+    "static": true,
+    "longname": "/Users/daniel.olivares/Development/parkhub/canonical/circe/src/lib/createValidatorsMap.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 7,
+    "kind": "function",
+    "name": "createValidatorsMap",
+    "memberof": "src/lib/createValidatorsMap.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/lib/createValidatorsMap.js~createValidatorsMap",
+    "access": null,
+    "export": true,
+    "importPath": "@parkhub/circe/src/lib/createValidatorsMap.js",
+    "importStyle": "createValidatorsMap",
+    "description": " ",
+    "lineNumber": 17,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "array"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "validators",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "ValidatorMap"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 8,
+    "kind": "file",
+    "name": "src/lib/formatKafkaMessage.js",
+    "content": "/* @flow */\n\nexport default function formatKafkaMessage(message: Message): Buffer {\n  if (message !== null && typeof message === 'object') {\n    return Buffer.from(JSON.stringify(message));\n  }\n\n  return Buffer.from(message);\n}\n",
+    "static": true,
+    "longname": "/Users/daniel.olivares/Development/parkhub/canonical/circe/src/lib/formatKafkaMessage.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 9,
+    "kind": "function",
+    "name": "formatKafkaMessage",
+    "memberof": "src/lib/formatKafkaMessage.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/lib/formatKafkaMessage.js~formatKafkaMessage",
+    "access": null,
+    "export": true,
+    "importPath": "@parkhub/circe/src/lib/formatKafkaMessage.js",
+    "importStyle": "formatKafkaMessage",
+    "description": " ",
+    "lineNumber": 3,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Message"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "message",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Buffer"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 10,
+    "kind": "file",
+    "name": "src/lib/identity.js",
+    "content": "/* @flow */\n\nexport default function identity<T>(value: T): T {\n  return value;\n}\n",
+    "static": true,
+    "longname": "/Users/daniel.olivares/Development/parkhub/canonical/circe/src/lib/identity.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 11,
+    "kind": "function",
+    "name": "identity",
+    "memberof": "src/lib/identity.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/lib/identity.js~identity",
+    "access": null,
+    "export": true,
+    "importPath": "@parkhub/circe/src/lib/identity.js",
+    "importStyle": "identity",
+    "description": " ",
+    "lineNumber": 3,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "T"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": ""
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "T"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "kind": "index",
+    "content": "# Circe\n\n> Ridiculously crazy easy event store API that leverages GRPC to guarantee consistent messages.\n\nLeverage your own validator against any publishable/consumable event. This is basically an extender\nof it's plugin as it augments it's plugin's API.\n",
+    "longname": "/Users/daniel.olivares/Development/parkhub/canonical/circe/README.md",
+    "name": "./README.md",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "packageJSON",
+    "content": "{\n  \"name\": \"@parkhub/circe\",\n  \"author\": \"Daniel Olivares\",\n  \"version\": \"0.0.0-semantically-released\",\n  \"scripts\": {\n    \"start\": \"nps\",\n    \"commitmsg\": \"opt --in commit-msg --exec \\\"validate-commit-msg\\\"\",\n    \"precommit\": \"opt --in pre-commit --exec \\\"npm start validate\\\"\"\n  },\n  \"main\": \"dist/index.js\",\n  \"engines\": {\n    \"node\": \">=8.0.0\",\n    \"npm\": \">=3\"\n  },\n  \"files\": [\n    \"dist\"\n  ],\n  \"devDependencies\": {\n    \"@parkhub/eslint-config-parkhub-base\": \"^1.0.0\",\n    \"are-we-flow-yet\": \"^1.0.0\",\n    \"babel-cli\": \"^6.24.1\",\n    \"babel-eslint\": \"^7.2.3\",\n    \"babel-jest\": \"^20.0.3\",\n    \"babel-plugin-transform-object-rest-spread\": \"^6.23.0\",\n    \"babel-plugin-transform-strict-mode\": \"^6.24.1\",\n    \"babel-preset-env\": \"^1.6.0\",\n    \"babel-preset-flow\": \"^6.23.0\",\n    \"codecov\": \"^2.3.0\",\n    \"commitizen\": \"^2.9.6\",\n    \"condition-codefresh\": \"^1.0.1\",\n    \"cz-conventional-changelog\": \"^2.0.0\",\n    \"delay\": \"^2.0.0\",\n    \"documentation\": \"^5.2.1\",\n    \"esdoc\": \"^1.0.1\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-flow-type-plugin\": \"^1.0.0\",\n    \"eslint\": \"^4.4.1\",\n    \"eslint-config-airbnb-base\": \"^11.3.1\",\n    \"eslint-plugin-babel\": \"^4.1.2\",\n    \"eslint-plugin-flowtype\": \"^2.35.0\",\n    \"eslint-plugin-import\": \"^2.7.0\",\n    \"eslint-plugin-jest\": \"^20.0.3\",\n    \"flow-bin\": \"^0.52.0\",\n    \"flow-typed\": \"^2.1.5\",\n    \"husky\": \"^0.14.3\",\n    \"jest\": \"^20.0.4\",\n    \"leasot\": \"^4.10.0\",\n    \"nps\": \"^5.7.0\",\n    \"nps-utils\": \"^1.3.0\",\n    \"opt-cli\": \"^1.5.1\",\n    \"prettier-eslint-cli\": \"^4.1.1\",\n    \"rimraf\": \"^2.6.1\",\n    \"semantic-release\": \"^6.3.6\",\n    \"validate-commit-msg\": \"^2.14.0\"\n  },\n  \"release\": {\n    \"verifyConditions\": \"condition-codefresh\",\n    \"debug\": false\n  },\n  \"config\": {\n    \"commitizen\": {\n      \"path\": \"cz-conventional-changelog\"\n    }\n  },\n  \"jest\": {\n    \"verbose\": true,\n    \"coverageThreshold\": {\n      \"global\": {\n        \"branches\": 100,\n        \"functions\": 100,\n        \"lines\": 100,\n        \"statements\": 100\n      }\n    },\n    \"testMatch\": [\n      \"**/__tests__/**/*test.js?(x)\"\n    ],\n    \"collectCoverageFrom\": [\n      \"src/**/*.js\"\n    ],\n    \"modulePathIgnorePatterns\": [\n      \"dist/*\"\n    ],\n    \"coveragePathIgnorePatterns\": [\n      \"/node_modules/\",\n      \"/dist/\"\n    ]\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/parkhub/eslint-config-parkhub-base.git\"\n  },\n  \"bugs\": {\n    \"url\": \"https://github.com/parkhub/eslint-config-parkhub-base/issues\"\n  },\n  \"publishConfig\": {\n    \"access\": \"public\"\n  },\n  \"dependencies\": {\n    \"lodash.clonedeep\": \"^4.5.0\",\n    \"node-rdkafka\": \"^1.0.6\",\n    \"p-event\": \"^1.3.0\",\n    \"uuid\": \"^3.1.0\"\n  }\n}\n",
+    "longname": "/Users/daniel.olivares/Development/parkhub/canonical/circe/package.json",
+    "name": "package.json",
+    "static": true,
+    "access": "public"
+  }
+]
