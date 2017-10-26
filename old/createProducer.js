@@ -1,5 +1,3 @@
-/* @flow */
-
 import kafka from 'node-rdkafka';
 import pEvent from 'p-event';
 import circeMiddleware from '@parkhub/circe-middleware';
@@ -7,12 +5,7 @@ import checkParamsMiddleware from './middleware/checkParamsMiddleware';
 import kafkaMessageToBufferMiddleware from './middleware/kafkaMessageToBufferMiddleware';
 import timestampMiddleware from './middleware/timestampMiddleware';
 
-type ProducerParameters = {
-  connection: string,
-  globalCfgs?: Object
-};
-
-export default async function createProducer({ connection, globalCfgs = {} }: ProducerParameters) {
+export default async function createProducer({ connection, globalCfgs = {} }) {
   if (!connection) {
     throw new Error('connection is required');
   }
