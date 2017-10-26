@@ -1,8 +1,7 @@
 const magicByte = 0;
 
-export default function serializeToSchemaRegistryAvro(cfgs, startingLength) {
-  const { message, registry, ...otherCfgs } = cfgs;
-  const { topic } = otherCfgs;
+export default function serializeMessageToSchemaRegistryAvro(cfgs, startingLength) {
+  const { message, registry, topic } = cfgs;
   const { schemaType, schemaId } = registry.getSchemaInfoByTopic({ topic });
 
   const length = startingLength || 1024;
@@ -17,13 +16,8 @@ export default function serializeToSchemaRegistryAvro(cfgs, startingLength) {
     // The buffer was too short, we need to resize.
     const newStartingLength = length - pos;
 
-    return serializeToSchemaRegistryAvro(cfgs, newStartingLength);
+    return serializeMessageToSchemaRegistryAvro(cfgs, newStartingLength);
   }
 
-  const srAvroBuffer = buf.slice(0, pos);
-
-  return {
-    message: srAvroBuffer,
-    ...otherCfgs
-  };
+  return buf.slice(0, pos);
 }

@@ -4,14 +4,16 @@ const producerProto = {
   produce(produceCfgs) {
     const { client, registry } = this;
 
-    const {
-      message, topic, partition, timestamp, oToken, key
-    } = prepareProduceConfiguration({
+    const encodedMessage = prepareProduceConfiguration({
       registry,
       ...produceCfgs
     });
 
-    client.produce(topic, partition, message, key, timestamp, oToken);
+    const {
+      topic, partition, key, timestamp, oToken
+    } = produceCfgs;
+
+    client.produce(topic, partition, encodedMessage, key, timestamp, oToken);
   }
 };
 

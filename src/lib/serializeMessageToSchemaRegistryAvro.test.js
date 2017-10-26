@@ -1,5 +1,5 @@
 import avro from 'avsc';
-import serializeToSchemaRegistryAvro from './serializeToSchemaRegistryAvro';
+import serializeMessageToSchemaRegistryAvro from './serializeMessageToSchemaRegistryAvro';
 
 const schemaFixture = () =>
   avro.Type.forSchema({
@@ -36,15 +36,10 @@ test('Should serialize to schema registry valid avro', () => {
     int: 1
   };
 
-  const extraCfgs = {
-    topic: 'test',
-    extra: 'config'
-  };
-
-  const { message: serializedMessage, ...resultingExtraCfgs } = serializeToSchemaRegistryAvro({
+  const serializedMessage = serializeMessageToSchemaRegistryAvro({
     message,
     registry,
-    ...extraCfgs
+    topic: 'test'
   });
 
   const schemaId = serializedMessage.readInt32BE(1);
@@ -52,7 +47,6 @@ test('Should serialize to schema registry valid avro', () => {
 
   expect(schemaId).toBe(1);
   expect(decodedMessage).toEqual(message);
-  expect(resultingExtraCfgs).toEqual(extraCfgs);
 });
 
 test('Should serialize a big message to schema registry valid avro', () => {
@@ -66,14 +60,10 @@ test('Should serialize a big message to schema registry valid avro', () => {
     int: 550
   };
 
-  const extraCfgs = {
-    extra: 'config'
-  };
-
-  const { message: serializedMessage, ...resultingExtraCfgs } = serializeToSchemaRegistryAvro({
+  const serializedMessage = serializeMessageToSchemaRegistryAvro({
     message,
     registry,
-    ...extraCfgs
+    topic: 'test'
   });
 
   const schemaId = serializedMessage.readInt32BE(1);
@@ -81,5 +71,4 @@ test('Should serialize a big message to schema registry valid avro', () => {
 
   expect(schemaId).toBe(1);
   expect(decodedMessage).toEqual(message);
-  expect(resultingExtraCfgs).toEqual(extraCfgs);
 });
