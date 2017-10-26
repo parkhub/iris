@@ -14,6 +14,21 @@ const producerProto = {
     } = produceCfgs;
 
     client.produce(topic, partition, encodedMessage, key, timestamp, oToken);
+  },
+  poll() {
+    const { client } = this;
+
+    client.poll();
+  },
+  setPollInterval({ interval }) {
+    const { client } = this;
+
+    client.setPollInterval(interval);
+  },
+  flush() {
+    const { client } = this;
+
+    client.flush();
   }
 };
 

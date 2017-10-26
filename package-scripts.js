@@ -3,9 +3,7 @@
 
 const npsUtils = require('nps-utils');
 
-const series = npsUtils.series;
-const concurrent = npsUtils.concurrent;
-const rimraf = npsUtils.rimraf;
+const { series, concurrent, rimraf } = npsUtils;
 
 module.exports = {
   scripts: {

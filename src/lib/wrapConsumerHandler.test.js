@@ -41,7 +41,7 @@ test('Should create a handler that decodes an avro encoded message before passin
 
   const consumerHandler = wrapConsumerHandler({ handler, registry });
 
-  consumerHandler({ message: serializedMessage, topic });
+  consumerHandler({ value: serializedMessage, topic });
 
   expect(handler).toHaveBeenCalledWith({ message, topic, schemaId: 1 });
 });

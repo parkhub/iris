@@ -25,7 +25,7 @@
     "babel-plugin-transform-strict-mode": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
-    "codecov": "^2.3.1",
+    "codecov": "^3.0.0",
     "commitizen": "^2.9.6",
     "condition-codefresh": "^1.0.1",
     "cz-conventional-changelog": "^2.0.0",
@@ -96,6 +96,8 @@
   "dependencies": {
     "@parkhub/circe-middleware": "^1.1.0",
     "avsc": "^5.0.6",
+    "axios": "^0.17.0",
+    "escape-json-node": "^2.0.0",
     "is-json": "^2.0.1",
     "lodash.flow": "^3.5.0",
     "node-rdkafka": "^2.1.1",

@@ -7,7 +7,7 @@ test('Should create a new producer instance and pass along the client and regist
 
   const cfgs = {
     producerCfgs: {
-      brokerUrl: 'testurl:8080'
+      brokerList: 'testurl:8080'
     },
     registry
   };

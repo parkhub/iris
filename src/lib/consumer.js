@@ -1,16 +1,14 @@
-import kafka from 'node-rdkafka';
+import asyncPipe from './asyncPipe';
+import initializeClient from './initializeClient';
+import createIrisConsumer from './createIrisConsumer';
+import createRDKConsumer from './createRDKConsumer';
+import composeWithCommonClient from './composeWithCommonClient';
 
-export default function createRDKConsumer(cfgs) {
-  const { consumerCfgs: { brokerUrl, topicCfgs, ...otherConsumerCfgs }, ...otherCfgs } = cfgs;
-  const defaultCfgs = {
-    'metadata.broker.list': brokerUrl,
-    'api.version.request': true
-  };
+const consumer = asyncPipe(
+  createRDKConsumer,
+  initializeClient,
+  createIrisConsumer,
+  composeWithCommonClient
+);
 
-  const rdkConsumer = new kafka.KafkaConsumer({ ...defaultCfgs, otherConsumerCfgs }, topicCfgs);
-
-  return {
-    client: rdkConsumer,
-    ...otherCfgs
-  };
-}
+export default consumer;

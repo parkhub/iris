@@ -1,6 +1,6 @@
 export default function wrapConsumerHandler({ handler, registry }) {
   return (data) => {
-    const { message: encodedMessage, topic } = data;
+    const { value: encodedMessage, topic } = data;
     const { schemaType } = registry.getSchemaInfoByTopic({ topic });
 
     const schemaId = encodedMessage.readInt32BE(1);

@@ -12,7 +12,7 @@ import consumer from './lib/consumer';
 
 type IrisConfigs = {
   registryUrl: string,
-  brokerUrl: string,
+  brokerList: string,
   schemaCfgs: Object
 };
 
@@ -25,9 +25,9 @@ const irisProto = {
     return this;
   },
   async createProducer(cfgs) {
-    const { brokerUrl, registry } = this;
+    const { brokerList, registry } = this;
     const producerCfgs = {
-      brokerUrl,
+      brokerList,
       ...cfgs
     };
 
@@ -41,9 +41,9 @@ const irisProto = {
     return initiatedProducer;
   },
   async createConsumer(cfgs) {
-    const { brokerUrl, registry } = this;
+    const { brokerList, registry } = this;
     const consumerCfgs = {
-      brokerUrl,
+      brokerList,
       ...cfgs
     };
 
@@ -64,12 +64,12 @@ const irisProto = {
   }
 };
 
-export default function iris({ registryUrl, brokerUrl, schemaCfgs }: IrisConfigs) {
+export default function iris({ registryUrl, brokerList, schemaCfgs }: IrisConfigs) {
   return Object.assign(Object.create(irisProto), {
     instantiatedProducers: [],
     instantiatedConsumers: [],
     schemaCfgs,
     registryUrl,
-    brokerUrl
+    brokerList
   });
 }
