@@ -1,10 +1,10 @@
-import prepareProduceConfiguration from './prepareProduceConfiguration';
+import serializeMessageToSchemaRegistryAvro from './serializeMessageToSchemaRegistryAvro';
 
 const producerProto = {
   produce(produceCfgs) {
     const { client, registry } = this;
 
-    const encodedMessage = prepareProduceConfiguration({
+    const encodedMessage = serializeMessageToSchemaRegistryAvro({
       registry,
       ...produceCfgs
     });

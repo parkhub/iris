@@ -1,14 +1,4 @@
-function wrapConsumerHandler({ handler, registry }) {
-  return (data) => {
-    const { message: encodedMessage, topic } = data;
-    const { schemaType } = registry.getSchemaInfoByTopic({ topic });
-
-    const schemaId = encodedMessage.readInt32BE(1);
-    const decodedMessage = schemaType.decode(encodedMessage, 5);
-
-    handler({ message: decodedMessage, topic, schemaId });
-  };
-}
+import wrapConsumerHandler from './wrapConsumerHandler';
 
 const consumerProto = {
   subscribe(subscribeCfgs) {
@@ -23,7 +13,7 @@ const consumerProto = {
   }
 };
 
-export default function createIrisProducer(cfgs) {
+export default function createIrisConsumer(cfgs) {
   const { client, registry } = cfgs;
 
   return Object.assign(Object.create(consumerProto), {
