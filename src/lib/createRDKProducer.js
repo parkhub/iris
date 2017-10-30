@@ -1,4 +1,7 @@
 import kafka from 'node-rdkafka';
+import debug from 'debug';
+
+const log = debug('iris:producer:createRDKProducer');
 
 export default function createRDKProducer(cfgs) {
   const { producerCfgs: { brokerList, ...otherProducerCfgs }, ...otherCfgs } = cfgs;
@@ -8,10 +11,23 @@ export default function createRDKProducer(cfgs) {
     'api.version.request': true
   };
 
-  const rdkProducer = new kafka.Producer({ ...defaultCfgs, ...otherProducerCfgs });
+  const producerCfgs = {
+    ...defaultCfgs,
+    ...otherProducerCfgs
+  };
 
-  return {
+  log('Creating new producer with %O', producerCfgs);
+
+  const rdkProducer = new kafka.Producer(producerCfgs);
+
+  log('Successfully created producer');
+
+  const result = {
     client: rdkProducer,
     ...otherCfgs
   };
+
+  log('Returning %O', result);
+
+  return result;
 }

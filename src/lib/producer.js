@@ -2,13 +2,15 @@ import asyncPipe from './asyncPipe';
 import initializeClient from './initializeClient';
 import createIrisProducer from './createIrisProducer';
 import createRDKProducer from './createRDKProducer';
-import composeWithCommonClient from './composeWithCommonClient';
+import mixinCommonMethods from './mixinCommonMethods';
 
-const producer = asyncPipe(
-  createRDKProducer,
-  initializeClient,
-  createIrisProducer,
-  composeWithCommonClient
-);
+export default function producer(cfgs) {
+  const { producerCfgs, registry } = cfgs;
 
-export default producer;
+  const producer = asyncPipe(
+    createRDKProducer,
+    initializeClient,
+    mixinCommonMethods,
+    createIrisProducer(registry)
+  );
+}

@@ -5,7 +5,6 @@ services:
       context: .
     command: npm start test.integration
     depends_on:
-      - rest-proxy
       - kafka
       - zookeeper
       - schema-registry

@@ -11,7 +11,7 @@
     }
   },
   "testMatch": [
-    "**/__tests__/*.test.js"
+    "**/__tests__/producer.integration.test.js"
   ],
   "modulePathIgnorePatterns": [
     "dist/*"
