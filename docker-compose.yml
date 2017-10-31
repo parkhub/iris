@@ -12,7 +12,7 @@ services:
       - ./:/home/app
       - /home/app/node_modules
   kafka:
-    image: pk-confluent-kafka:3.3.0
+    image: parkhubprime/pk-confluent-kafka:3.3.0
     hostname: kafka
     depends_on:
       - zookeeper
@@ -26,7 +26,7 @@ services:
       KAFKA_JMX_PORT: 9999
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
   zookeeper:
-    image: pk-confluent-zookeeper:3.3.0
+    image: parkhubprime/pk-confluent-zookeeper:3.3.0
     hostname: zookeeper
     ports:
       - 2181:2181
