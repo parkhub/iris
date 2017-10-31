@@ -1,18 +1,7 @@
 version: '3'
 services:
-  iris-integration:
-    build: 
-      context: .
-    command: npm start test.integration
-    depends_on:
-      - kafka
-      - zookeeper
-      - schema-registry
-    volumes:
-      - ./:/home/app
-      - /home/app/node_modules
   kafka:
-    image: kafka-confluent:latest
+    image: pk-confluent-kafk:3.3.0
     hostname: kafka
     depends_on:
       - zookeeper
@@ -23,7 +12,7 @@ services:
       KAFKA_JMX_PORT: 9999
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
   zookeeper:
-    image: zk-confluent:latest
+    image: pk-confluent-zookeeper:3.3.0
     hostname: zookeeper
     environment:
       ZOOKEEPER_REPLICAS: 1
