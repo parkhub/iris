@@ -24,6 +24,12 @@ type IrisConfigs = {
 
 const log = debug('iris');
 
+/*
+  TODO: Figure out a way to actually validate messages using the schema when consuming them.
+  TODO: Improve code comments and documentation
+  TODO: Implement FlowJS
+*/
+
 const irisProto = {
   /**
    * Initializes the the iris instance by loading the schema registry with it's types.
@@ -99,7 +105,7 @@ const irisProto = {
 };
 
 /**
- * Creates a new instance of iris
+ * Factory module for iris. It creates a new instance of iris.
  */
 export default function iris({ registryUrl, brokerList, schemaCfgs }: IrisConfigs) {
   log(

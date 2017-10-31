@@ -50,11 +50,11 @@ module.exports = {
     },
     docs: {
       description: 'Generate documentation',
-      script: 'esdoc'
+      script: 'documentationjs'
     },
     todo: {
       description: 'Generate TODO.md from in source TODO and FIXME tags',
-      script: 'leasot --reporter markdown src/**/*.js || true >> TODOS.md'
+      script: 'leasot --reporter markdown src/**/**/*.js >> TODOS.md'
     },
     flow: {
       description: 'Run Flow',
