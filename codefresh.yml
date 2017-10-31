@@ -8,7 +8,7 @@ steps:
   RunUnitTests:
     title: Running Unit Tests
     image: ${{BuildDockerImage}}
-    working_directory: /npm-module
+    working_directory: /home/app
     commands:
       - npm start validate
       - npm start report-coverage
