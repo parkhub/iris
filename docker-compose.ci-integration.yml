@@ -1,7 +1,7 @@
 version: '3'
 services:
   kafka:
-    image: pk-confluent-kafk:3.3.0
+    image: pk-confluent-kafka:3.3.0
     hostname: kafka
     depends_on:
       - zookeeper
