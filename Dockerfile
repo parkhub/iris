@@ -14,6 +14,3 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 ENTRYPOINT ["/tini", "--"]
-
-CMD ["nps", "start", "test.integration"]
-

@@ -22,25 +22,25 @@ steps:
         set:
           - '${{BuildDockerImage.imageId}}':
               - CF_QUALITY: false
-  # RunIntegrationTests:
-  #   type: composition
-  #   title: Running Integration Tests
-  #   description: Running integration tests with kafka
-  #   composition: docker-compose.yml
-  #   composition_candidates:
-  #     integration_tests:
-  #       image: ${{BuildDockerImage}}
-  #       command: npm start test.integration
-  #   on_success:
-  #     metadata:
-  #       set:
-  #         - '${{BuildDockerImage.imageId}}':
-  #             - CF_QUALITY: true
-  #   on_fail:
-  #     metadata:
-  #       set:
-  #         - '${{BuildDockerImage.imageId}}':
-  #             - CF_QUALITY: false
+  RunIntegrationTests:
+    type: composition
+    title: Running Integration Tests
+    description: Running integration tests with kafka
+    composition: docker-compose.yml
+    composition_candidates:
+      integration_tests:
+        image: ${{BuildDockerImage}}
+        command: npm start test.integrationCi && npm start report-coverage
+    on_success:
+      metadata:
+        set:
+          - '${{BuildDockerImage.imageId}}':
+              - CF_QUALITY: true
+    on_fail:
+      metadata:
+        set:
+          - '${{BuildDockerImage.imageId}}':
+              - CF_QUALITY: false
   PublishModule:
     title: Publishing my module
     image: ${{BuildDockerImage}}
