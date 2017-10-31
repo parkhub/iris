@@ -3,7 +3,7 @@ steps:
   BuildDockerImage:
     title: Building Docker Image
     type: build
-    image_name: circe
+    image_name: iris
     dockerfile: Dockerfile
   RunUnitTests:
     title: Running Unit Tests
