@@ -11,16 +11,26 @@ import schemaRegistry from './lib/schemaRegistry';
 import producer from './lib/producer';
 import consumer from './lib/consumer';
 
+type SchemaCfgs = {
+  topic: string,
+  version?: string
+};
+
 type IrisConfigs = {
   registryUrl: string,
   brokerList: string,
-  schemaCfgs: Object
+  schemaCfgs: [SchemaCfgs]
 };
 
 const log = debug('iris');
 
 const irisProto = {
-  async initialize() {
+  /**
+   * Initializes the the iris instance by loading the schema registry with it's types.
+   *
+   * Must be called before attempting to create a producer or a consumer.
+   */
+  async initialize(): Promise<any> {
     log('Initializing schema registry...');
     const { schemaCfgs, registryUrl } = this;
 
@@ -29,7 +39,10 @@ const irisProto = {
 
     return this;
   },
-  async createProducer(cfgs) {
+  /**
+   * Creates a new producer.
+   */
+  async createProducer(cfgs: { brokerList: string }): Promise<any> {
     const { brokerList, registry } = this;
     const producerCfgs = {
       brokerList,
@@ -49,7 +62,10 @@ const irisProto = {
 
     return initiatedProducer;
   },
-  async createConsumer(cfgs) {
+  /**
+   * Creates a new consumer.
+   */
+  async createConsumer(cfgs: { brokerList: string }): Promise<any> {
     const { brokerList, registry } = this;
     const consumerCfgs = {
       brokerList,
@@ -69,7 +85,10 @@ const irisProto = {
 
     return initiatedConsumer;
   },
-  disconnectAllClients() {
+  /**
+   * Disconnect ALL clients creates by this iris instance.
+   */
+  disconnectAllClients(): Promise<any> {
     const producers = this.instantiatedProducers;
     const consumers = this.instantiatedConsumers;
 
@@ -79,6 +98,9 @@ const irisProto = {
   }
 };
 
+/**
+ * Creates a new instance of iris
+ */
 export default function iris({ registryUrl, brokerList, schemaCfgs }: IrisConfigs) {
   log(
     `Creating new iris instance with { registryUrl: ${registryUrl}, brokerList: ${brokerList}, schemaCfgs: %O`,

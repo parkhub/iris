@@ -10,15 +10,7 @@
       "statements": 85
     }
   },
-  "testMatch": [
-    "**/__tests__/producer.integration.test.js"
-  ],
-  "modulePathIgnorePatterns": [
-    "dist/*"
-  ],
-  "coveragePathIgnorePatterns": [
-    "/node_modules/",
-    "/dist/",
-    "/fixtures/"
-  ]
+  "testMatch": ["**/__tests__/*.integration.test.js"],
+  "modulePathIgnorePatterns": ["dist/*"],
+  "coveragePathIgnorePatterns": ["/node_modules/", "/dist/", "/fixtures/"]
 }

@@ -54,7 +54,7 @@ test('Should serialize a big message to schema registry valid avro', () => {
   const avroType = schemaFixture();
 
   const message = {
-    name: Array(5000)
+    name: Array(10000)
       .fill('0')
       .join(),
     int: 550

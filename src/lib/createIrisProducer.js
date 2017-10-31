@@ -2,55 +2,34 @@ import debug from 'debug';
 import serializeMessageToSchemaRegistryAvro from './serializeMessageToSchemaRegistryAvro';
 
 const log = debug('iris:producer:createIrisProducer');
-const instanceLog = debug('iris:producer:createIrisProducer:instance');
 
-const producerProto = {
-  produce(produceCfgs) {
-    const { client, registry } = this;
+export default function createIrisProducer(registry) {
+  return (client) => {
+    const clientProduce = client.produce.bind(client);
 
-    instanceLog('Producing new message with %O', produceCfgs);
+    // eslint-disable-next-line no-param-reassign
+    client.produce = (topic, partition, message, key, timestamp, oToken) => {
+      log('Producing new message with %O', {
+        topic,
+        partition,
+        message,
+        key,
+        timestamp,
+        oToken
+      });
 
-    const encodedMessage = serializeMessageToSchemaRegistryAvro({
-      registry,
-      ...produceCfgs
-    });
+      const encodedMessage = serializeMessageToSchemaRegistryAvro({
+        registry,
+        message,
+        topic
+      });
 
-    instanceLog('Serialized message');
+      log('Serialized message');
 
-    const {
-      topic, partition, key, timestamp, oToken
-    } = produceCfgs;
+      log('Sending to rdkafka producer');
+      clientProduce(topic, partition, encodedMessage, key, timestamp, oToken);
+    };
 
-    instanceLog('Sending to rdkafka producer');
-    client.produce(topic, partition, encodedMessage, key, timestamp, oToken);
-  },
-  poll() {
-    const { client } = this;
-    instanceLog('Configuring producer to poll');
-
-    client.poll();
-  },
-  setPollInterval({ interval }) {
-    const { client } = this;
-    instanceLog(`Configuring poll interval of ${interval}`);
-
-    client.setPollInterval(interval);
-  },
-  flush() {
-    const { client } = this;
-    instanceLog('Flusing producer');
-
-    client.flush();
-  }
-};
-
-export default function createIrisProducer(cfgs) {
-  const { client, registry } = cfgs;
-
-  log('Creating new producer');
-
-  return Object.assign(producerProto, {
-    client,
-    registry
-  });
+    return client;
+  };
 }

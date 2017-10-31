@@ -3,31 +3,20 @@ import debug from 'debug';
 
 const log = debug('iris:producer:createRDKProducer');
 
-export default function createRDKProducer(cfgs) {
-  const { producerCfgs: { brokerList, ...otherProducerCfgs }, ...otherCfgs } = cfgs;
+export default function createRDKProducer(producerCfgs) {
+  const { brokerList, ...otherProducerCfgs } = producerCfgs;
 
   const defaultCfgs = {
     'metadata.broker.list': brokerList,
     'api.version.request': true
   };
 
-  const producerCfgs = {
+  const finalProducerCfgs = {
     ...defaultCfgs,
     ...otherProducerCfgs
   };
 
-  log('Creating new producer with %O', producerCfgs);
+  log('Creating new producer with %O', finalProducerCfgs);
 
-  const rdkProducer = new kafka.Producer(producerCfgs);
-
-  log('Successfully created producer');
-
-  const result = {
-    client: rdkProducer,
-    ...otherCfgs
-  };
-
-  log('Returning %O', result);
-
-  return result;
+  return new kafka.Producer(finalProducerCfgs);
 }

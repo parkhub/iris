@@ -2,11 +2,15 @@ import waitForServicesToBeAvailable from './fixtures/scripts/waitForServicesToBe
 import createSchema from './fixtures/scripts/createSchema';
 import iris from '../src';
 
-jest.setTimeout(600000);
+jest.setTimeout(300000);
+
+const testTopic = 'IntegrationTest';
+const registryUrl = 'http://schema-registry:8081';
+const brokerList = 'kafka:9092';
 
 beforeAll(async () => {
   await waitForServicesToBeAvailable();
-  await createSchema();
+  await createSchema(testTopic);
 });
 
 describe('Running combined producer consume test', () => {
@@ -17,14 +21,11 @@ describe('Running combined producer consume test', () => {
   });
 
   test('Should produce and consume a valid avro message using the schema defined', async (done) => {
-    expect.assertions(1);
+    expect.assertions(3);
 
-    const topic = 'IntegrationTest';
-    const registryUrl = 'http://schema-registry:8081';
-    const brokerList = 'kafka:9092';
     const schemaCfgs = [
       {
-        topic
+        topic: testTopic
       }
     ];
     const message = {
@@ -36,25 +37,28 @@ describe('Running combined producer consume test', () => {
     kafka = await iris({ registryUrl, brokerList, schemaCfgs }).initialize();
 
     const consumer = await kafka.createConsumer({
-      groupId: 'integrationgroup',
+      groupId: 'BothIntegrationTest',
       event_cb: true
     });
 
+    await consumer.connect();
+
     const handler = jest.fn(async (data) => {
-      expect(data).toEqual({
-        message,
-        topic,
-        schemaId: 1
-      });
+      expect(data.message).toEqual(message);
+      expect(data.topic).toBe(testTopic);
+      expect(data.schemaId).toBeDefined();
 
       done();
     });
-    consumer.subscribe({ topic: [topic], handler });
+
+    consumer.subscribe([testTopic], handler);
 
     setTimeout(async () => {
       const producer = await kafka.createProducer();
 
-      producer.produce({ topic, message });
+      await producer.connect();
+
+      producer.produce(testTopic, null, message);
     }, 10000);
   });
 });
