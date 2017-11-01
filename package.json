@@ -1,7 +1,7 @@
 {
   "name": "@parkhub/iris",
   "author": "Daniel Olivares",
-  "version": "1.0.0",
+  "version": "0.0.0-semantically-released",
   "scripts": {
     "start": "nps",
     "commitmsg": "opt --in commit-msg --exec \"validate-commit-msg\"",
