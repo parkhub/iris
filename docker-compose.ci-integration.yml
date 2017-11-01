@@ -7,6 +7,9 @@ services:
       - kafka
       - zookeeper
       - schema-registry
+    volumes:
+      - ./:/home/app
+      - /home/app/node_modules
   kafka:
     image: parkhubprime/pk-confluent-kafka:3.3.0
     hostname: kafka
