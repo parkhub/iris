@@ -50,6 +50,7 @@
     "prettier-eslint-cli": "4.4.0",
     "rimraf": "^2.6.2",
     "semantic-release": "^8.2.0",
+    "semantic-release-cli": "^3.2.4",
     "validate-commit-msg": "^2.14.0"
   },
   "release": {
