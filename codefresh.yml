@@ -44,7 +44,7 @@ steps:
   PublishModule:
     title: Publishing my module
     image: ${{BuildDockerImage}}
-    working_directory: /npm-module 
+    working_directory: /home/app
     when:
       branch:
         only: [ master ]

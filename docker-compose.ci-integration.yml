@@ -1,5 +1,12 @@
 version: '3'
 services:
+  integration_tests:
+    image: iris
+    command: npm start test.integrationCi 
+    depends_on:
+      - kafka
+      - zookeeper
+      - schema-registry
   kafka:
     image: parkhubprime/pk-confluent-kafka:3.3.0
     hostname: kafka
