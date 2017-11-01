@@ -53,7 +53,7 @@
   },
   "release": {
     "verifyConditions": "condition-codefresh",
-    "debug": false
+    "debug": true
   },
   "config": {
     "commitizen": {
