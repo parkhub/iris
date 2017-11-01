@@ -60,6 +60,10 @@ module.exports = {
     flow: {
       description: 'Run Flow',
       script: 'flow check'
+    },
+    integration: {
+      description: 'Validate and report coverage',
+      script: series('DEBUG=iris:* jest --coverage --config ./jest.integration.json', 'codecov')
     }
   },
   options: {
