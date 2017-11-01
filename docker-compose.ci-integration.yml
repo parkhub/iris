@@ -2,7 +2,7 @@ version: '3'
 services:
   integration_tests:
     image: iris
-    command: npm start test.integrationCi 
+    command: nps start test.integrationCi && nps start report-coverage
     depends_on:
       - kafka
       - zookeeper
