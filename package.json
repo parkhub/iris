@@ -12,7 +12,9 @@
     "node": ">=8.0.0",
     "npm": ">=3"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@parkhub/eslint-config-parkhub-base": "^1.2.1",
     "@telerik/semantic-prerelease": "^1.2.1",
@@ -27,10 +29,10 @@
     "codecov": "^3.0.0",
     "commitizen": "^2.9.6",
     "condition-codefresh": "^1.0.1",
-    "cz-conventional-changelog": "^2.0.0",
+    "cz-conventional-changelog": "^2.1.0",
     "delay": "^2.0.0",
     "documentation": "^5.3.3",
-    "eslint": "^4.9.0",
+    "eslint": "^4.10.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-flowtype": "^2.39.1",
     "eslint-plugin-import": "^2.8.0",
@@ -38,12 +40,12 @@
     "flow-bin": "^0.57.3",
     "flow-copy-source": "^1.2.1",
     "flow-remove-types": "^1.2.3",
-    "flow-typed": "^2.2.0",
+    "flow-typed": "^2.2.1",
     "husky": "^0.14.3",
     "jest": "^21.2.1",
     "leasot": "^4.10.2",
     "nps": "^5.7.1",
-    "nps-utils": "^1.4.0",
+    "nps-utils": "^1.5.0",
     "opt-cli": "^1.6.0",
     "prettier-eslint-cli": "4.4.0",
     "rimraf": "^2.6.2",
@@ -71,9 +73,16 @@
         "statements": 85
       }
     },
-    "testMatch": ["**/src/**/?(*.)test.js?(x)"],
-    "modulePathIgnorePatterns": ["dist/*"],
-    "coveragePathIgnorePatterns": ["/node_modules/", "/dist/"]
+    "testMatch": [
+      "**/src/**/?(*.)test.js?(x)"
+    ],
+    "modulePathIgnorePatterns": [
+      "dist/*"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ]
   },
   "repository": {
     "type": "git",
