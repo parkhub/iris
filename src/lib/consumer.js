@@ -1,14 +1,12 @@
-import asyncPipe from './asyncPipe';
-import initializeClient from './initializeClient';
+import flow from 'lodash.flow';
 import createIrisConsumer from './createIrisConsumer';
 import createRDKConsumer from './createRDKConsumer';
-import composeWithCommonClient from './composeWithCommonClient';
+import promisifyCommonMethods from './promisifyCommonMethods';
 
-const consumer = asyncPipe(
-  createRDKConsumer,
-  initializeClient,
-  createIrisConsumer,
-  composeWithCommonClient
-);
+export default function consumer(cfgs) {
+  const { consumerCfgs, registry } = cfgs;
 
-export default consumer;
+  const irisFactory = createIrisConsumer(registry);
+
+  return flow(createRDKConsumer, promisifyCommonMethods, irisFactory)(consumerCfgs);
+}

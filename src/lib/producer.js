@@ -1,14 +1,12 @@
-import asyncPipe from './asyncPipe';
-import initializeClient from './initializeClient';
+import flow from 'lodash.flow';
 import createIrisProducer from './createIrisProducer';
 import createRDKProducer from './createRDKProducer';
-import composeWithCommonClient from './composeWithCommonClient';
+import promisifyCommonMethods from './promisifyCommonMethods';
 
-const producer = asyncPipe(
-  createRDKProducer,
-  initializeClient,
-  createIrisProducer,
-  composeWithCommonClient
-);
+export default function producer(cfgs) {
+  const { producerCfgs, registry } = cfgs;
 
-export default producer;
+  const irisFactory = createIrisProducer(registry);
+
+  return flow(createRDKProducer, promisifyCommonMethods, irisFactory)(producerCfgs);
+}

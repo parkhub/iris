@@ -3,12 +3,12 @@ steps:
   BuildDockerImage:
     title: Building Docker Image
     type: build
-    image_name: circe
+    image_name: iris
     dockerfile: Dockerfile
   RunUnitTests:
     title: Running Unit Tests
     image: ${{BuildDockerImage}}
-    working_directory: /npm-module
+    working_directory: /home/app
     commands:
       - npm start validate
       - npm start report-coverage
@@ -22,29 +22,31 @@ steps:
         set:
           - '${{BuildDockerImage.imageId}}':
               - CF_QUALITY: false
-  # RunIntegrationTests:
-  #   type: composition
-  #   title: Running Integration Tests
-  #   description: Running integration tests with kafka
-  #   composition: docker-compose.yml
-  #   composition_candidates:
-  #     integration_tests:
-  #       image: ${{BuildDockerImage}}
-  #       command: npm start test.integration
-  #   on_success:
-  #     metadata:
-  #       set:
-  #         - '${{BuildDockerImage.imageId}}':
-  #             - CF_QUALITY: true
-  #   on_fail:
-  #     metadata:
-  #       set:
-  #         - '${{BuildDockerImage.imageId}}':
-  #             - CF_QUALITY: false
+  RunIntegrationTests:
+    type: composition
+    title: Running Integration Tests
+    description: Running integration tests with kafka
+    composition: docker-compose.ci-integration.yml
+    composition_candidates:
+      integration_tests:
+        image: ${{BuildDockerImage}}
+        command: npm start integration
+        environment:
+          - CODECOV_TOKEN=${{CODECOV_TOKEN}}
+    on_success:
+      metadata:
+        set:
+          - '${{BuildDockerImage.imageId}}':
+              - CF_QUALITY: true
+    on_fail:
+      metadata:
+        set:
+          - '${{BuildDockerImage.imageId}}':
+              - CF_QUALITY: false
   PublishModule:
     title: Publishing my module
     image: ${{BuildDockerImage}}
-    working_directory: /npm-module 
+    working_directory: /home/app
     when:
       branch:
         only: [ master ]
