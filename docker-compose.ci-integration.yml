@@ -3,8 +3,6 @@ services:
   integration_tests:
     image: iris
     command: npm start integration
-    environment:
-      - CODECOV_TOKEN=${{CODECOV_TOKEN}}
     depends_on:
       - kafka
       - zookeeper
