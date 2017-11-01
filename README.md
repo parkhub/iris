@@ -1,4 +1,5 @@
 # iris
+> Kafka and Avro mashup
 
 A kafka library that is meant to validate produced messages and decode consumed messages using schemas defined in Confluent's [Schema Registry].
 
