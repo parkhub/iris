@@ -1,7 +1,7 @@
 {
   "name": "@parkhub/iris",
   "author": "Daniel Olivares",
-  "version": "2.0.0",
+  "version": "0.0.0-semantically-released",
   "scripts": {
     "start": "nps",
     "commitmsg": "opt --in commit-msg --exec \"validate-commit-msg\"",
@@ -48,12 +48,11 @@
     "prettier-eslint-cli": "4.4.0",
     "rimraf": "^2.6.2",
     "semantic-release": "^8.2.0",
-    "semantic-release-cli": "^3.2.4",
     "validate-commit-msg": "^2.14.0"
   },
   "release": {
     "verifyConditions": "condition-codefresh",
-    "debug": true
+    "debug": false
   },
   "config": {
     "commitizen": {
