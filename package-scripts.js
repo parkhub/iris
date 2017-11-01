@@ -14,8 +14,8 @@ module.exports = {
     test: {
       default: 'jest --coverage',
       watch: 'jest --watch',
-      integration: 'DEBUG=iris* jest --coverage --config ./jest.integration.json --watch',
-      integrationCi: 'DEBUG=iris* jest --coverage --config ./jest.integration.json'
+      integration: 'DEBUG=iris:* jest --coverage --config ./jest.integration.json --watch',
+      integrationCi: 'DEBUG=iris:* jest --coverage --config ./jest.integration.json'
     },
     build: {
       description: 'delete the dist directory and run babel to build the files',

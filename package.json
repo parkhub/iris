@@ -12,7 +12,9 @@
     "node": ">=8.0.0",
     "npm": ">=3"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@parkhub/eslint-config-parkhub-base": "^1.2.1",
     "@telerik/semantic-prerelease": "^1.2.1",
@@ -71,9 +73,16 @@
         "statements": 85
       }
     },
-    "testMatch": ["**/src/**/?(*.)test.js?(x)"],
-    "modulePathIgnorePatterns": ["dist/*"],
-    "coveragePathIgnorePatterns": ["/node_modules/", "/dist/"]
+    "testMatch": [
+      "**/src/**/?(*.)test.js?(x)"
+    ],
+    "modulePathIgnorePatterns": [
+      "dist/*"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ]
   },
   "repository": {
     "type": "git",
