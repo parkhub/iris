@@ -4,8 +4,6 @@
   "version": "1.0.0",
   "scripts": {
     "start": "nps",
-    "ci-integration":
-      "jest --coverage --config ./jest.integration.json && codecov",
     "commitmsg": "opt --in commit-msg --exec \"validate-commit-msg\"",
     "precommit": "opt --in pre-commit --exec \"npm start validate\""
   },
