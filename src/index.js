@@ -27,7 +27,7 @@ const log = debug('iris');
 /*
   TODO: Figure out a way to actually validate messages using the schema when consuming them.
   TODO: Improve code comments and documentation
-  TODO: Implement FlowJS
+  TODO: Implement FlowJS.
 */
 
 const irisProto = {
