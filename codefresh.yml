@@ -30,7 +30,7 @@ steps:
     composition_candidates:
       integration_tests:
         image: ${{BuildDockerImage}}
-        command: npm start test.integrationCi
+        command: npm start test.integrationCi && npm start report-coverage
     on_success:
       metadata:
         set:
