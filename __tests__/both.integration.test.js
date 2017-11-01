@@ -55,7 +55,6 @@ describe('Running combined producer consume test', () => {
 
     setTimeout(async () => {
       const producer = await kafka.createProducer();
-
       await producer.connect();
 
       producer.produce(testTopic, null, message);
