@@ -122,6 +122,8 @@ import iris from '@parkhub/iris';
     }
   });
   
+  await consumer.connect();
+
   const handler = data => console.log(data);
   consumer.subscribe(['MY_TOPIC'], handler);
 
@@ -153,7 +155,9 @@ import iris from '@parkhub/iris';
   const producer = await iris.createProducer({
     'client.id': 'kafka',
     'dr_cb': true 
-  }).connect();
+  });
+
+  await producer.connect();
 
   producer.produce('TestTopic', null, 'message');
 

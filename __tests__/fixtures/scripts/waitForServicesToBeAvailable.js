@@ -15,7 +15,7 @@ export default async function waitForServicesToBeAvailable(tries = 0) {
   try {
     log(`Making request ${tries}`);
 
-    await delay(30000);
+    await delay(15000);
     await request(postOpts);
   } catch (e) {
     log('Failed...');

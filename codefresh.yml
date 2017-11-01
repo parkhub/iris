@@ -26,7 +26,7 @@ steps:
     type: composition
     title: Running Integration Tests
     description: Running integration tests with kafka
-    composition: docker-compose.ci-integration.yml
+    composition: ./docker-compose.ci-integration.yml
     composition_candidates:
       integration_tests:
         image: ${{BuildDockerImage}}

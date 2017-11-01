@@ -36,7 +36,7 @@ describe('Running combined producer consume test', () => {
 
     kafka = await iris({ registryUrl, brokerList, schemaCfgs }).initialize();
 
-    const consumer = await kafka.createConsumer({
+    const consumer = kafka.createConsumer({
       groupId: 'BothIntegrationTest',
       event_cb: true
     });
@@ -54,7 +54,7 @@ describe('Running combined producer consume test', () => {
     consumer.subscribe([testTopic], handler);
 
     setTimeout(async () => {
-      const producer = await kafka.createProducer();
+      const producer = kafka.createProducer();
       await producer.connect();
 
       producer.produce(testTopic, null, message);

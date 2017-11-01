@@ -48,7 +48,7 @@ const irisProto = {
   /**
    * Creates a new producer.
    */
-  async createProducer(cfgs: { brokerList: string }): Promise<any> {
+  createProducer(cfgs: { brokerList: string }): Promise<any> {
     const { brokerList, registry } = this;
     const producerCfgs = {
       brokerList,
@@ -57,7 +57,7 @@ const irisProto = {
 
     log('Creating new producer with configurations %O', producerCfgs);
 
-    const initiatedProducer = await producer({
+    const initiatedProducer = producer({
       producerCfgs,
       registry
     });
@@ -71,7 +71,7 @@ const irisProto = {
   /**
    * Creates a new consumer.
    */
-  async createConsumer(cfgs: { brokerList: string }): Promise<any> {
+  createConsumer(cfgs: { brokerList: string }): Promise<any> {
     const { brokerList, registry } = this;
     const consumerCfgs = {
       brokerList,
@@ -80,7 +80,7 @@ const irisProto = {
 
     log('Creating new consumer with configurations %O', consumerCfgs);
 
-    const initiatedConsumer = await consumer({
+    const initiatedConsumer = consumer({
       consumerCfgs,
       registry
     });
