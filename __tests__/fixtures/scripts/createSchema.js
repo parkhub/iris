@@ -1,19 +1,23 @@
+import debug from 'debug';
 import request from 'request-promise-native';
 import integrationSchema from '../integrationSchema';
 
-const topic = 'IntegrationTest';
-const subjectName = `${topic}-value`;
+// const topic = 'IntegrationTest';
 const schemaRegistryUrl = 'http://schema-registry:8081';
+const log = debug('test:integration:createSchema');
 
-const postOpts = {
-  method: 'post',
-  url: `${schemaRegistryUrl}/subjects/${subjectName}/versions`,
-  body: {
-    schema: JSON.stringify(integrationSchema())
-  },
-  json: true
-};
+export default function createSchema(topic) {
+  log(`Creating schema for topic ${topic}...`);
 
-export default function createSchema() {
+  const subjectName = `${topic}-value`;
+  const postOpts = {
+    method: 'post',
+    url: `${schemaRegistryUrl}/subjects/${subjectName}/versions`,
+    body: {
+      schema: JSON.stringify(integrationSchema(topic))
+    },
+    json: true
+  };
+
   return request(postOpts);
 }

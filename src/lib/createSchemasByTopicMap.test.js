@@ -51,8 +51,6 @@ test('Should take an array of schema definitions and create a map of them', () =
   expect(schemasByTopicMap.testtwo.schemaId).toBe(2);
 });
 
-test('Should not return anything if no schemas were found', () => {
-  const { schemasByTopicMap } = createSchemasMapByTopic();
-
-  expect(schemasByTopicMap).toEqual({});
+test('Should throw if no schema configurations are passed', () => {
+  expect(() => createSchemasMapByTopic()).toThrow();
 });

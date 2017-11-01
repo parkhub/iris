@@ -1,29 +1,19 @@
 import wrapConsumerHandler from './wrapConsumerHandler';
 
-const consumerProto = {
-  subscribe(subscribeCfgs) {
-    const { topic, handler } = subscribeCfgs;
-    const { client, registry } = this;
+export default function createIrisConsumer(registry) {
+  return (client) => {
+    const clientSubscribe = client.subscribe.bind(client);
 
-    client.subscribe(topic);
+    // eslint-disable-next-line no-param-reassign
+    client.subscribe = (topic, handler) => {
+      clientSubscribe(topic);
 
-    const wrappedHandler = wrapConsumerHandler({ handler, registry });
+      const wrappedHandler = wrapConsumerHandler({ handler, registry });
 
-    client.consume();
-    client.on('data', wrappedHandler);
-  },
-  unsubscribe() {
-    const { client } = this;
+      client.consume();
+      client.on('data', wrappedHandler);
+    };
 
-    client.unsubscribe();
-  }
-};
-
-export default function createIrisConsumer(cfgs) {
-  const { client, registry } = cfgs;
-
-  return Object.assign(Object.create(consumerProto), {
-    client,
-    registry
-  });
+    return client;
+  };
 }

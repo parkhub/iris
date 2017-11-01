@@ -1,42 +1,35 @@
+import debug from 'debug';
 import serializeMessageToSchemaRegistryAvro from './serializeMessageToSchemaRegistryAvro';
 
-const producerProto = {
-  produce(produceCfgs) {
-    const { client, registry } = this;
+const log = debug('iris:producer:createIrisProducer');
 
-    const encodedMessage = serializeMessageToSchemaRegistryAvro({
-      registry,
-      ...produceCfgs
-    });
+export default function createIrisProducer(registry) {
+  return (client) => {
+    const clientProduce = client.produce.bind(client);
 
-    const {
-      topic, partition, key, timestamp, oToken
-    } = produceCfgs;
+    // eslint-disable-next-line no-param-reassign
+    client.produce = (topic, partition, message, key, timestamp, oToken) => {
+      log('Producing new message with %O', {
+        topic,
+        partition,
+        message,
+        key,
+        timestamp,
+        oToken
+      });
 
-    client.produce(topic, partition, encodedMessage, key, timestamp, oToken);
-  },
-  poll() {
-    const { client } = this;
+      const encodedMessage = serializeMessageToSchemaRegistryAvro({
+        registry,
+        message,
+        topic
+      });
 
-    client.poll();
-  },
-  setPollInterval({ interval }) {
-    const { client } = this;
+      log('Serialized message');
 
-    client.setPollInterval(interval);
-  },
-  flush() {
-    const { client } = this;
+      log('Sending to rdkafka producer');
+      clientProduce(topic, partition, encodedMessage, key, timestamp, oToken);
+    };
 
-    client.flush();
-  }
-};
-
-export default function createIrisProducer(cfgs) {
-  const { client, registry } = cfgs;
-
-  return Object.assign(Object.create(producerProto), {
-    client,
-    registry
-  });
+    return client;
+  };
 }

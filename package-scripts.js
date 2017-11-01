@@ -14,7 +14,8 @@ module.exports = {
     test: {
       default: 'jest --coverage',
       watch: 'jest --watch',
-      integration: 'jest --coverage --config ./jest.integration.json'
+      integration: 'DEBUG=iris:* jest --coverage --config ./jest.integration.json --watch',
+      integrationCi: 'DEBUG=iris:* jest --coverage --config ./jest.integration.json'
     },
     build: {
       description: 'delete the dist directory and run babel to build the files',
@@ -50,15 +51,19 @@ module.exports = {
     },
     docs: {
       description: 'Generate documentation',
-      script: 'esdoc'
+      script: 'documentationjs'
     },
     todo: {
       description: 'Generate TODO.md from in source TODO and FIXME tags',
-      script: 'leasot --reporter markdown src/**/*.js >> TODOS.md'
+      script: 'leasot --reporter markdown src/**/**/*.js >> TODOS.md'
     },
     flow: {
       description: 'Run Flow',
       script: 'flow check'
+    },
+    integration: {
+      description: 'Validate and report coverage',
+      script: series('DEBUG=iris:* jest --coverage --config ./jest.integration.json', 'codecov')
     }
   },
   options: {

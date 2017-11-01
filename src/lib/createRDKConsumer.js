@@ -1,12 +1,9 @@
 import kafka from 'node-rdkafka';
 
-export default function createRDKConsumer(cfgs) {
+export default function createRDKConsumer(consumerCfgs) {
   const {
-    consumerCfgs: {
-      brokerList, groupId, topicCfgs, ...otherConsumerCfgs
-    },
-    ...otherCfgs
-  } = cfgs;
+    brokerList, groupId, topicCfgs, ...otherConsumerCfgs
+  } = consumerCfgs;
 
   const defaultCfgs = {
     'group.id': groupId,
@@ -14,10 +11,5 @@ export default function createRDKConsumer(cfgs) {
     'api.version.request': true
   };
 
-  const rdkConsumer = new kafka.KafkaConsumer({ ...defaultCfgs, ...otherConsumerCfgs }, topicCfgs);
-
-  return {
-    client: rdkConsumer,
-    ...otherCfgs
-  };
+  return new kafka.KafkaConsumer({ ...defaultCfgs, ...otherConsumerCfgs }, topicCfgs);
 }

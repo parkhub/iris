@@ -1,6 +1,6 @@
 import avro from 'avsc';
 
-export default function createSchemasByTopicMap(rawSchemas = []) {
+export default function createSchemasByTopicMap(rawSchemas) {
   const schemasByTopicMap = rawSchemas.reduce((map, rawSchema) => {
     const {
       schema, id, version, subject
