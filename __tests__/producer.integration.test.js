@@ -4,20 +4,25 @@ import createSchema from './fixtures/scripts/createSchema';
 import waitForServicesToBeAvailable from './fixtures/scripts/waitForServicesToBeAvailable';
 
 const testTopic = 'ProducerIntegrationTest';
+const nullTestTopic = 'ProducerNullDefaultIntegrationTest';
 const registryUrl = 'http://schema-registry:8081';
 const brokerList = 'kafka:9092';
 
 let registry;
 
-jest.setTimeout(300000);
+jest.setTimeout(30000);
 
 beforeAll(async () => {
   await waitForServicesToBeAvailable();
   await createSchema(testTopic);
+  await createSchema(nullTestTopic, true);
 
   const schemaCfgs = [
     {
       topic: testTopic
+    },
+    {
+      topic: nullTestTopic
     }
   ];
 
@@ -129,6 +134,30 @@ describe('Tests while producer is connected', () => {
     });
 
     kafkaProducer.produce(testTopic, null, message);
+  });
+
+  test('Should produce a valid avro message with default null types', (done) => {
+    const message = {
+      name: 'Bruce Wayne',
+      nullValue: 12345
+    };
+
+    const interval = setInterval(() => {
+      kafkaProducer.poll();
+    }, 500);
+
+    kafkaProducer.once('delivery-report', (err, report) => {
+      clearInterval(interval);
+
+      expect(err).toBeNull();
+      expect(report.topic).toBe(nullTestTopic);
+      expect(typeof report.partition).toBe('number');
+      expect(typeof report.offset).toBe('number');
+
+      done();
+    });
+
+    kafkaProducer.produce(nullTestTopic, null, message);
   });
 
   test('Should throw if the message does not match the avro schema', () => {

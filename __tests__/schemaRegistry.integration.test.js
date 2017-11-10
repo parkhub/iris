@@ -5,7 +5,7 @@ import waitForServicesToBeAvailable from './fixtures/scripts/waitForServicesToBe
 const testTopic = 'SchemaRegistryIntegrationTest';
 const registryUrl = 'http://schema-registry:8081';
 
-jest.setTimeout(300000);
+jest.setTimeout(30000);
 
 beforeAll(async () => {
   await waitForServicesToBeAvailable();
