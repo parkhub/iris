@@ -13,7 +13,7 @@ module.exports = {
     },
     test: {
       default: 'jest --coverage',
-      watch: 'jest --watch',
+      watch: 'DEBUG=iris:* jest --watch',
       integration: 'DEBUG=iris:* jest --coverage --config ./jest.integration.json --watch',
       integrationCi: 'DEBUG=iris:* jest --coverage --config ./jest.integration.json'
     },

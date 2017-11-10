@@ -2,21 +2,24 @@ import avro from 'avsc';
 import serializeMessageToSchemaRegistryAvro from './serializeMessageToSchemaRegistryAvro';
 
 const schemaFixture = () =>
-  avro.Type.forSchema({
-    type: 'record',
-    name: 'testSchema',
-    namespace: 'test.schema',
-    fields: [
-      {
-        name: 'name',
-        type: 'string'
-      },
-      {
-        name: 'int',
-        type: 'int'
-      }
-    ]
-  });
+  avro.Type.forSchema(
+    {
+      type: 'record',
+      name: 'testSchema',
+      namespace: 'test.schema',
+      fields: [
+        {
+          name: 'name',
+          type: 'string'
+        },
+        {
+          name: 'int',
+          type: 'int'
+        }
+      ]
+    },
+    { wrapUnions: true }
+  );
 
 const registryFixture = () => ({
   getSchemaInfoByTopic() {

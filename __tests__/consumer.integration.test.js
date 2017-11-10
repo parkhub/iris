@@ -12,7 +12,7 @@ const brokerList = 'kafka:9092';
 let registry;
 let kafkaProducer;
 
-jest.setTimeout(300000);
+jest.setTimeout(30000);
 
 beforeAll(async () => {
   await waitForServicesToBeAvailable();
@@ -82,9 +82,18 @@ describe('Tests while consumer is connected', () => {
     };
 
     const handler = jest.fn((data) => {
-      expect(data.message).toEqual(message);
-      expect(data.topic).toBe(testTopic);
-      expect(data.schemaId).toBeDefined();
+      const {
+        message: resultMsg, topic, schemaId, size, offset, partition, key
+      } = data;
+
+      expect(resultMsg).toEqual(message);
+      expect(topic).toBe(testTopic);
+      expect(schemaId).toBeDefined();
+
+      expect(size).toBeDefined();
+      expect(offset).toBeDefined();
+      expect(partition).toBeDefined();
+      expect(key).toBeDefined();
 
       done();
     });
@@ -124,26 +133,26 @@ describe.skip('Bad avro tests', () => {
       age: '12'
     };
 
-    const badSchema = avro.Type.forSchema({
-      type: 'record',
-      name: 'ConsumerIntegration',
-      namespace: 'test.schema',
-      fields: [
-        {
-          name: 'name',
-          type: 'int'
-        },
-        {
-          name: 'age',
-          type: 'string'
-        },
-        {
-          name: 'time',
-          type: 'long'
-        }
-      ]
-    });
-
+    // const badSchema = avro.Type.forSchema({
+    //   type: 'record',
+    //   name: 'ConsumerIntegration',
+    //   namespace: 'test.schema',
+    //   fields: [
+    //     {
+    //       name: 'name',
+    //       type: 'int'
+    //     },
+    //     {
+    //       name: 'age',
+    //       type: 'string'
+    //     },
+    //     {
+    //       name: 'time',
+    //       type: 'long'
+    //     }
+    //   ]
+    // });
+    //
     const localProducer = producer({
       producerCfgs: {
         brokerList,
@@ -163,11 +172,20 @@ describe.skip('Bad avro tests', () => {
     await localProducer.connect();
 
     const handler = jest.fn((result) => {
-      expect(result).toEqual({
+      expect(result).toContainEqual({
         message,
         topic: testBadAvroTopic,
         schemaId: 1
       });
+
+      const {
+        size, offset, partition, key
+      } = result;
+
+      expect(size).toBeDefined();
+      expect(offset).toBeDefined();
+      expect(partition).toBeDefined();
+      expect(key).toBeDefined();
 
       done();
     });

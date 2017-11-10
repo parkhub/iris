@@ -111,6 +111,20 @@ This method follows closely with [Kafka Consumer Configurations] except that gro
 
 Only the [standard consumer api] is supported at the moment. I've also joined the "subscribe" process so subscribe actually takes an array of topics and the handler. So you don't need to call subscribe, then consume then listen on 'data' event. Everything is done when you call the subscribe method.
 
+A consumer handler will receive the following structure:
+
+```javascript
+{
+  message: 'Decoded Message',
+  topic: 'Topic the message came from',
+  schemaId: 'The schemaId used to encode the topic',
+  key: 'Key for this kafka topic',
+  size: 'Size of message in bytes',
+  partition: 'Partition the message was on',
+  offset: 'Offset the message was read from'
+}
+```
+
 ```javascript
 import iris from '@parkhub/iris';
 
