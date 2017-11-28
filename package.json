@@ -32,7 +32,7 @@
     "cz-conventional-changelog": "^2.1.0",
     "delay": "^2.0.0",
     "documentation": "^5.3.3",
-    "eslint": "^4.10.0",
+    "eslint": "^4.12.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-flowtype": "^2.39.1",
     "eslint-plugin-import": "^2.8.0",
@@ -43,7 +43,7 @@
     "flow-typed": "^2.2.3",
     "husky": "^0.14.3",
     "jest": "^21.2.1",
-    "leasot": "^4.10.2",
+    "leasot": "^4.12.0",
     "nps": "^5.7.1",
     "nps-utils": "^1.5.0",
     "opt-cli": "^1.6.0",
@@ -95,11 +95,11 @@
     "access": "public"
   },
   "dependencies": {
-    "avsc": "^5.0.7",
+    "avsc": "^5.1.1",
     "debug": "^3.1.0",
     "lodash.flow": "^3.5.0",
     "lodash.isequal": "^4.5.0",
-    "node-rdkafka": "^2.1.1",
+    "node-rdkafka": "^2.2.1",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
     "uuid": "^3.1.0"
