@@ -1,6 +1,6 @@
 import avro from 'avsc';
 import utils from 'util';
-import _ from 'lodash';
+import includes from 'lodash.includes';
 import debug from 'debug';
 
 const log = debug('iris:createAmbiguousUnionTypeHook');
@@ -40,8 +40,9 @@ AmbiguousUnionType.prototype._fromValue = function fromValue(val) {
 export default function createAmbiguousUnionTypeHook() {
   const checked = [];
 
-  const beenChecked = attrs => checked.length > 0 && _.includes(checked, attrs);
+  const beenChecked = attrs => checked.length > 0 && includes(checked, attrs);
 
+  // eslint-disable-next-line consistent-return
   return (attrs, opts) => {
     // Let this fall through so that the default type is used
     if (Array.isArray(attrs) && !beenChecked(attrs)) {
