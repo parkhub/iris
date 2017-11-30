@@ -74,6 +74,18 @@ describe('Tests while consumer is connected', () => {
     expect(Array.isArray(meta.topics)).toBe(true);
   });
 
+  test('Should return topic offsets', async () => {
+    const response = await kafkaConsumer.getTopicOffsets(testTopic, 0, 5000);
+
+    expect(response).toEqual({ highOffset: 0, lowOffset: 0 });
+  });
+
+  test('Should reject with no args passed in.', async () => {
+    await kafkaConsumer.disconnect();
+
+    await expect(kafkaConsumer.getTopicOffsets(testTopic, 0, 5000)).rejects.toBeDefined();
+  });
+
   test('Should receive and decode a valid avro message', (done) => {
     const message = {
       name: 'Bruce Wayne',
