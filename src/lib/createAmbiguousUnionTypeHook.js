@@ -1,6 +1,6 @@
 import avro from 'avsc';
 import utils from 'util';
-import isEqual from 'lodash.isequal';
+import includes from 'lodash.includes';
 import debug from 'debug';
 
 const log = debug('iris:createAmbiguousUnionTypeHook');
@@ -40,8 +40,7 @@ AmbiguousUnionType.prototype._fromValue = function fromValue(val) {
 export default function createAmbiguousUnionTypeHook() {
   const checked = [];
 
-  const beenChecked = attrs =>
-    checked.length > 0 && checked.every(checkedAttrs => isEqual(checkedAttrs, attrs));
+  const beenChecked = attrs => checked.length > 0 && includes(checked, attrs);
 
   // eslint-disable-next-line consistent-return
   return (attrs, opts) => {
