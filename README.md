@@ -64,7 +64,7 @@ async function startApp() {
 
   const producer = await kafka.createProducer({
     'client.id': 'kafka',
-    'dr_cb': true 
+    'dr_cb': true
   }).connect();
 
 
@@ -95,7 +95,7 @@ These methods for both Producers/Consumers are:
  - connect
  - disconnect
 
-They take the same configurations as described in the [node-rdkafka api docs] except the callback if you're using the promise API. 
+They take the same configurations as described in the [node-rdkafka api docs] except the callback if you're using the promise API.
 
 HOWEVER, due to node-rdkafka using its methods to do some internal magic, you also have the option of using the callback API. Just pass in the callback along with each method's arguments.
 
@@ -136,7 +136,7 @@ import iris from '@parkhub/iris';
       'consume.callback.max.messages': 100
     }
   });
-  
+
   await consumer.connect();
 
   const handler = data => console.log(data);
@@ -169,7 +169,7 @@ import iris from '@parkhub/iris';
 (async function startProducer() {
   const producer = await iris.createProducer({
     'client.id': 'kafka',
-    'dr_cb': true 
+    'dr_cb': true
   });
 
   await producer.connect();
@@ -186,7 +186,7 @@ iris
   .createProducer({ 'client.id': 'kafka:9092', dr_cb: true })
   .then((producer) => {
     producer.produce('TestTopic', null, 'message');
-    
+
     return producer.disconnect();
   })
   .then(() => console.log('DONE!'))
@@ -228,6 +228,39 @@ iris
 [comm-friendly-badge]: http://commitizen.github.io/cz-cli/
 [node-rdkafka]: https://github.com/Blizzard/node-rdkafka
 [Kafka knowledge]: https://kafka.apache.org/documentation/
+---
+## Development Guide
+In this section you will be able to find out how to get started developing for iris.
 
+### Requirements
+* Must have the latest version of Docker installed.
 
+### Downloading
+`git clone git@github.com:parkhub/iris.git`
 
+### Building
+`docker-compose up iris-integration`
+
+### Running Tests
+##### Integration Tests
+When you run `docker-compose up iris-integration` it will actually run the integration tests.  As you make changes to the project the tests will rerun.
+
+##### Unit Tests
+To run the unit test simply make sure to install the packages locally by running `npm start`.  Then all you need to do is run the test command.
+
+`npm start test`
+
+### Creating a Commit
+We use [semantic-release](https://github.com/semantic-release/semantic-release) to manage our releases.  If you havent worked with it before please take a look at their project to understand more about how it works.
+
+1. First I like to run the validate command before running through the commit process because if it fails on validation when your commiting then you will have to go through the commit process again.  To run the validate command simply run this:
+
+    `npm start validate`
+
+2. To start a new release make sure you have added your files to git and then run this command:
+
+    `npm start commit`
+
+    This will take you through the release process.  Follow the directions and read the steps throughly.  
+
+3. After you have commited your code and it passes the linter then you can push your branch up to github and create a pull request.
