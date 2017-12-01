@@ -80,7 +80,7 @@ describe('Tests while consumer is connected', () => {
     expect(response).toEqual({ highOffset: 0, lowOffset: 0 });
   });
 
-  test('Should reject with no args passed in.', async () => {
+  test('Should reject when a consumer is disconnected.', async () => {
     await kafkaConsumer.disconnect();
 
     await expect(kafkaConsumer.getTopicOffsets(testTopic, 0, 5000)).rejects.toBeDefined();
