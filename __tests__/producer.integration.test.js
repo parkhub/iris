@@ -1,12 +1,12 @@
-import producer from '../src/lib/producer';
-import schemaRegistry from '../src/lib/schemaRegistry';
-import createSchema from './fixtures/scripts/createSchema';
-import waitForServicesToBeAvailable from './fixtures/scripts/waitForServicesToBeAvailable';
+import producer from "../src/lib/producer";
+import schemaRegistry from "../src/lib/schemaRegistry";
+import createSchema from "./fixtures/scripts/createSchema";
+import waitForServicesToBeAvailable from "./fixtures/scripts/waitForServicesToBeAvailable";
 
-const testTopic = 'ProducerIntegrationTest';
-const nullTestTopic = 'ProducerNullDefaultIntegrationTest';
-const registryUrl = 'http://schema-registry:8081';
-const brokerList = 'kafka:9092';
+const testTopic = "ProducerIntegrationTest";
+const nullTestTopic = "ProducerNullDefaultIntegrationTest";
+const registryUrl = "http://schema-registry:8081";
+const brokerList = "kafka:9092";
 
 let registry;
 
@@ -29,7 +29,7 @@ beforeAll(async () => {
   registry = await schemaRegistry({ schemaCfgs, registryUrl });
 });
 
-describe('Tests for producer connectivity', () => {
+describe("Tests for producer connectivity", () => {
   let kafkaProducer;
 
   beforeEach(async () => {
@@ -37,13 +37,13 @@ describe('Tests for producer connectivity', () => {
       producerCfgs: {
         brokerList,
         dr_cb: true,
-        debug: 'all'
+        debug: "all"
       },
       registry
     });
   });
 
-  test('Should connect/disconnect using the promise interface', async () => {
+  test("Should connect/disconnect using the promise interface", async () => {
     const result = await kafkaProducer.connect();
 
     expect(result.orig_broker_id).toBeDefined();
@@ -55,7 +55,7 @@ describe('Tests for producer connectivity', () => {
     await expect(kafkaProducer.getMetadata()).rejects.toBeDefined();
   });
 
-  test('Should connect/disconnect using the callback interface', (done) => {
+  test("Should connect/disconnect using the callback interface", done => {
     kafkaProducer.connect({}, (err, result) => {
       expect(err).toBeNull();
       expect(result.orig_broker_id).toBeDefined();
@@ -71,7 +71,7 @@ describe('Tests for producer connectivity', () => {
   });
 });
 
-describe('Tests while producer is connected', () => {
+describe("Tests while producer is connected", () => {
   let kafkaProducer;
 
   beforeEach(async () => {
@@ -79,7 +79,7 @@ describe('Tests while producer is connected', () => {
       producerCfgs: {
         brokerList,
         dr_cb: true,
-        debug: 'all'
+        debug: "all"
       },
       registry
     });
@@ -91,7 +91,7 @@ describe('Tests while producer is connected', () => {
     await kafkaProducer.disconnect();
   });
 
-  test('Should fetch metadata(which ensures its connected)', async () => {
+  test("Should fetch metadata(which ensures its connected)", async () => {
     const meta = await kafkaProducer.getMetadata();
 
     expect(meta.orig_broker_id).toBeDefined();
@@ -99,7 +99,7 @@ describe('Tests while producer is connected', () => {
     expect(Array.isArray(meta.topics)).toBe(true);
   });
 
-  test('Should fetch metadata(which ensures its connected) using callback', (done) => {
+  test("Should fetch metadata(which ensures its connected) using callback", done => {
     kafkaProducer.getMetadata({}, (err, meta) => {
       expect(err).toBeNull();
 
@@ -111,9 +111,9 @@ describe('Tests while producer is connected', () => {
     });
   });
 
-  test('Should produce a valid avro message', (done) => {
+  test("Should produce a valid avro message", done => {
     const message = {
-      name: 'Bruce Wayne',
+      name: "Bruce Wayne",
       age: 25,
       time: Date.now()
     };
@@ -122,13 +122,13 @@ describe('Tests while producer is connected', () => {
       kafkaProducer.poll();
     }, 500);
 
-    kafkaProducer.once('delivery-report', (err, report) => {
+    kafkaProducer.once("delivery-report", (err, report) => {
       clearInterval(interval);
 
       expect(err).toBeNull();
       expect(report.topic).toBe(testTopic);
-      expect(typeof report.partition).toBe('number');
-      expect(typeof report.offset).toBe('number');
+      expect(typeof report.partition).toBe("number");
+      expect(typeof report.offset).toBe("number");
 
       done();
     });
@@ -136,9 +136,9 @@ describe('Tests while producer is connected', () => {
     kafkaProducer.produce(testTopic, null, message);
   });
 
-  test('Should produce a valid avro message with default null types', (done) => {
+  test("Should produce a valid avro message with default null types", done => {
     const message = {
-      name: 'Bruce Wayne',
+      name: "Bruce Wayne",
       nullValue: 12345
     };
 
@@ -146,13 +146,13 @@ describe('Tests while producer is connected', () => {
       kafkaProducer.poll();
     }, 500);
 
-    kafkaProducer.once('delivery-report', (err, report) => {
+    kafkaProducer.once("delivery-report", (err, report) => {
       clearInterval(interval);
 
       expect(err).toBeNull();
       expect(report.topic).toBe(nullTestTopic);
-      expect(typeof report.partition).toBe('number');
-      expect(typeof report.offset).toBe('number');
+      expect(typeof report.partition).toBe("number");
+      expect(typeof report.offset).toBe("number");
 
       done();
     });
@@ -160,15 +160,14 @@ describe('Tests while producer is connected', () => {
     kafkaProducer.produce(nullTestTopic, null, message);
   });
 
-  test('Should throw if the message does not match the avro schema', () => {
+  test("Should throw if the message does not match the avro schema", () => {
     const message = {
-      name: 'Bruce Wayne',
-      age: '25',
+      name: 1681,
+      age: "25",
       time: Date.now()
     };
-
     expect(() => kafkaProducer.produce(testTopic, null, message)).toThrow();
   });
 
-  test.skip('Should use the promise method of queryWatermarkOffsets', async () => {});
+  test.skip("Should use the promise method of queryWatermarkOffsets", async () => {});
 });

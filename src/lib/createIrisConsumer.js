@@ -24,7 +24,6 @@ export default function createIrisConsumer(registry) {
 
           resolve(offsets);
         }));
-
     return client;
   };
 }
