@@ -251,16 +251,16 @@ To run the unit test simply make sure to install the packages locally by running
 `npm start test`
 
 ### Creating a Commit
-We use [semantic-release](https://github.com/semantic-release/semantic-release) to manage our releases.  If you havent worked with it before please take a look at their project to understand more about how it works.
+We use [semantic-release](https://github.com/semantic-release/semantic-release) to manage our releases.  If you haven\'t worked with it before please take a look at their project to understand more about how it works.
 
-1. First I like to run the validate command before running through the commit process because if it fails on validation when your commiting then you will have to go through the commit process again.  To run the validate command simply run this:
+1. First I like to run the validate command before running through the commit process because if it fails on validation when your committing then you will have to go through the commit process again.  To run the validate command simply run this:
 
     `npm start validate`
 
-2. To start a new release make sure you have added your files to git and then run this command:
+2. To start a new release, make sure you have added your files to git and then run this command:
 
     `npm start commit`
 
     This will take you through the release process.  Follow the directions and read the steps throughly.  
 
-3. After you have commited your code and it passes the linter then you can push your branch up to github and create a pull request.
+3. After you have committed your code and it passes the linter then you can push your branch up to Github and create a pull request.

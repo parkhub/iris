@@ -1,9 +1,9 @@
-const magicByte = 0;
+import debug from 'debug';
 
-export default function serializeMessageToSchemaRegistryAvro(
-  cfgs,
-  startingLength
-) {
+const magicByte = 0;
+const log = debug('iris:serializeMessageToSchemaRegistryAvro');
+
+export default function serializeMessageToSchemaRegistryAvro(cfgs, startingLength) {
   const { message, registry, topic } = cfgs;
   const { schemaType, schemaId } = registry.getSchemaInfoByTopic({ topic });
 
@@ -16,20 +16,21 @@ export default function serializeMessageToSchemaRegistryAvro(
   buf.writeInt32BE(schemaId, 1);
 
   try {
-    pos = schemaType.encode(message, buf, 5); //encode message into avro
+    pos = schemaType.encode(message, buf, 5); // encode message into avro
   } catch (err) {
-    console.log(
-      "There has been an error in encoding your message. \nCheck your Schema."
-    );
-    let paths = [];
+    const paths = [];
     schemaType.isValid(message, {
-      //Check message against schema
-      errorHook: function(path) {
-        //Track paths that cause issues
+      // Check message against avro schema
+      errorHook(path) {
+        // Track paths that cause issues
         paths.push(path.join());
       }
     });
-    console.log("Invalid schema paths: " + paths);
+    log(
+      'There has been an error in encoding your message. \nCheck your Schema.\nInvalid schema paths: ',
+      paths
+    );
+    throw err;
   }
 
   if (pos < 0) {
