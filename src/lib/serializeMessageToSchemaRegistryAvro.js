@@ -28,7 +28,8 @@ export default function serializeMessageToSchemaRegistryAvro(cfgs, startingLengt
     });
     log(
       'There has been an error in encoding your message. \nCheck your Schema.\nInvalid schema paths: ',
-      paths
+      paths,
+      err.message
     );
     throw err;
   }
