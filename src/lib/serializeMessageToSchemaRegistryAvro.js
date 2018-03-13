@@ -26,12 +26,12 @@ export default function serializeMessageToSchemaRegistryAvro(cfgs, startingLengt
         paths.push(path.join());
       }
     });
-    log(
-      'There has been an error in encoding your message. \nCheck your Schema.\nInvalid schema paths: ',
-      paths,
-      err.message
-    );
-    throw err;
+    const validationError = {};
+    validationError.type = 'VALIDATION_ERROR';
+    validationError.message = 'There has been an error in encoding your message. \nCheck your Schema.\nInvalid schema paths: ';
+    validationError.invalidKeys = paths;
+    log(validationError);
+    throw validationError;
   }
 
   if (pos < 0) {
