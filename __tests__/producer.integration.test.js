@@ -3,10 +3,10 @@ import schemaRegistry from "../src/lib/schemaRegistry";
 import createSchema from "./fixtures/scripts/createSchema";
 import waitForServicesToBeAvailable from "./fixtures/scripts/waitForServicesToBeAvailable";
 
-const testTopic = "ProducerIntegrationTest";
-const nullTestTopic = "ProducerNullDefaultIntegrationTest";
-const registryUrl = "http://schema-registry:8081";
-const brokerList = "kafka:9092";
+const testTopic = 'ProducerIntegrationTest';
+const nullTestTopic = 'ProducerNullDefaultIntegrationTest';
+const registryUrl = 'http://schema-registry:8081';
+const brokerList = 'kafka:9092';
 
 let registry;
 
@@ -162,8 +162,8 @@ describe("Tests while producer is connected", () => {
 
   test("Should throw if the message does not match the avro schema", () => {
     const message = {
-      age: "25",
       name: 1681,
+      age: "25",
       time: Date.now()
     };
     expect(() => kafkaProducer.produce(testTopic, null, message)).toThrow();
