@@ -75,3 +75,20 @@ test('Should serialize a big message to schema registry valid avro', () => {
   expect(schemaId).toBe(1);
   expect(decodedMessage).toEqual(message);
 });
+
+test('Should throw in attempt to serialize invalid message to schema registry avro', () => {
+  const registry = registryFixture();
+  // const avroType = schemaFixture();
+
+  const message = {
+    name: 55,
+    int: 'notAnInt' // error here as it should be an int.
+  };
+
+  expect(() =>
+    serializeMessageToSchemaRegistryAvro({
+      message,
+      registry,
+      topic: 'test'
+    })).toThrow();
+});

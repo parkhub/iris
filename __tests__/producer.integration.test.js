@@ -162,11 +162,10 @@ describe('Tests while producer is connected', () => {
 
   test('Should throw if the message does not match the avro schema', () => {
     const message = {
-      name: 'Bruce Wayne',
+      name: 1681,
       age: '25',
       time: Date.now()
     };
-
     expect(() => kafkaProducer.produce(testTopic, null, message)).toThrow();
   });
 
