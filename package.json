@@ -12,9 +12,7 @@
     "node": ">=8.0.0",
     "npm": ">=3"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "devDependencies": {
     "@parkhub/eslint-config-parkhub-base": "^1.2.1",
     "@telerik/semantic-prerelease": "^1.2.1",
@@ -52,10 +50,6 @@
     "semantic-release": "^15.4.0",
     "validate-commit-msg": "^2.14.0"
   },
-  "release": {
-    "verifyConditions": "condition-codefresh",
-    "debug": false
-  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
@@ -73,16 +67,9 @@
         "statements": 85
       }
     },
-    "testMatch": [
-      "**/src/**/?(*.)test.js?(x)"
-    ],
-    "modulePathIgnorePatterns": [
-      "dist/*"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ]
+    "testMatch": ["**/src/**/?(*.)test.js?(x)"],
+    "modulePathIgnorePatterns": ["dist/*"],
+    "coveragePathIgnorePatterns": ["/node_modules/", "/dist/"]
   },
   "repository": {
     "type": "git",

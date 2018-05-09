@@ -34,7 +34,7 @@ module.exports = {
     },
     release: {
       description: 'We automate releases with semantic-release. This should only be run on travis',
-      script: series('semantic-release pre', 'npm publish', 'semantic-release post')
+      script: 'semantic-release'
     },
     areWeFlow: {
       description: 'Checks how many files ARE NOT flow-inized',
