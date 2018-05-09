@@ -3,7 +3,8 @@ import serializeMessageToSchemaRegistryAvro from './serializeMessageToSchemaRegi
 
 const log = debug('iris:producer:createIrisProducer');
 
-export default function createIrisProducer(registry) { // overwriting rdkafka
+export default function createIrisProducer(registry) {
+  // overwriting rdkafka
   return (client) => {
     const clientProduce = client.produce.bind(client);
 
