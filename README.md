@@ -1,3 +1,4 @@
+
 # iris
 > Kafka and Avro mashup
 
@@ -192,6 +193,41 @@ iris
   .then(() => console.log('DONE!'))
   .catch(err => console.log('ERROR!', err));
 ```
+## Development Guide
+In this section you will be able to find out how to get started developing for iris.
+
+### Requirements
+* Must have the latest version of Docker installed.
+
+### Downloading
+`git clone git@github.com:parkhub/iris.git`
+
+### Building
+`docker-compose up iris-integration`
+
+### Running Tests
+##### Integration Tests
+When you run `docker-compose up iris-integration` it will actually run the integration tests.  As you make changes to the project the tests will rerun.
+
+##### Unit Tests
+To run the unit test simply make sure to install the packages locally by running `npm start`.  Then all you need to do is run the test command.
+
+`npm start test`
+
+### Creating a Commit
+We use [semantic-release](https://github.com/semantic-release/semantic-release) to manage our releases.  If you haven\'t worked with it before please take a look at their project to understand more about how it works.
+
+1. First I like to run the validate command before running through the commit process because if it fails on validation when your committing then you will have to go through the commit process again.  To run the validate command simply run this:
+
+    `npm start validate`
+
+2. To start a new release, make sure you have added your files to git and then run this command:
+
+    `npm start commit`
+
+    This will take you through the release process.  Follow the directions and read the steps throughly.  
+
+3. After you have committed your code and it passes the linter then you can push your branch up to Github and create a pull request.
 
 [Kafka Producer configurations]: https://github.com/Blizzard/node-rdkafka#sending-messages
 [standard-producer api]: https://github.com/Blizzard/node-rdkafka#standard-api
@@ -228,39 +264,3 @@ iris
 [comm-friendly-badge]: http://commitizen.github.io/cz-cli/
 [node-rdkafka]: https://github.com/Blizzard/node-rdkafka
 [Kafka knowledge]: https://kafka.apache.org/documentation/
----
-## Development Guide
-In this section you will be able to find out how to get started developing for iris.
-
-### Requirements
-* Must have the latest version of Docker installed.
-
-### Downloading
-`git clone git@github.com:parkhub/iris.git`
-
-### Building
-`docker-compose up iris-integration`
-
-### Running Tests
-##### Integration Tests
-When you run `docker-compose up iris-integration` it will actually run the integration tests.  As you make changes to the project the tests will rerun.
-
-##### Unit Tests
-To run the unit test simply make sure to install the packages locally by running `npm start`.  Then all you need to do is run the test command.
-
-`npm start test`
-
-### Creating a Commit
-We use [semantic-release](https://github.com/semantic-release/semantic-release) to manage our releases.  If you haven\'t worked with it before please take a look at their project to understand more about how it works.
-
-1. First I like to run the validate command before running through the commit process because if it fails on validation when your committing then you will have to go through the commit process again.  To run the validate command simply run this:
-
-    `npm start validate`
-
-2. To start a new release, make sure you have added your files to git and then run this command:
-
-    `npm start commit`
-
-    This will take you through the release process.  Follow the directions and read the steps throughly.  
-
-3. After you have committed your code and it passes the linter then you can push your branch up to Github and create a pull request.
