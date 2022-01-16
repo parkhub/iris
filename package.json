@@ -82,7 +82,7 @@
     "access": "public"
   },
   "dependencies": {
-    "avsc": "^5.2.3",
+    "avsc": "^5.7.3",
     "debug": "^3.1.0",
     "lodash.flow": "^3.5.0",
     "lodash.includes": "^4.3.0",
