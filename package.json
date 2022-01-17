@@ -88,7 +88,7 @@
     "lodash.includes": "^4.3.0",
     "node-rdkafka": "^2.3.2",
     "request": "^2.85.0",
-    "request-promise-native": "^1.0.5",
+    "request-promise-native": "^1.0.9",
     "uuid": "^3.2.1"
   }
 }
