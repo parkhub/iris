@@ -1,4 +1,4 @@
-FROM node:8.9.1 
+FROM node:8.16.2 
 LABEL maintainer Daniel Olivares "daniel.olivares@parkhub.com"
 
 RUN mkdir /home/app
